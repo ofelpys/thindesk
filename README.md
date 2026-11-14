@@ -1,6 +1,6 @@
 # Thindesk
 
-Sistema de chamados técnicos com dashboard administrativo em desenvolvimento.
+Sistema de chamados técnicos com dashboard administrativo funcional.
 
 ## Tecnologias
 
@@ -11,7 +11,7 @@ Sistema de chamados técnicos com dashboard administrativo em desenvolvimento.
 
 ## Objetivo do dashboard
 
-O painel permitirá acompanhar indicadores gerais, chamados atendidos por período, distribuição por status, tipos mais atendidos e filtros de consulta. Os dados serão fornecidos por endpoints da própria aplicação.
+O painel permite acompanhar indicadores gerais, chamados atendidos por período, distribuição por status, tipos mais atendidos e filtros de consulta. Os dados são fornecidos por endpoints da própria aplicação.
 
 ## Execução local
 
@@ -22,6 +22,10 @@ O painel permitirá acompanhar indicadores gerais, chamados atendidos por perío
 
 As credenciais não devem ser colocadas nos arquivos enviados ao GitHub.
 
+## Documentação
+
+[Documentação, API e evidências de testes](documentacao-thindesk-dashboard.pdf)
+
 ## Gitflow
 
 - `main`: versão estável
@@ -29,4 +33,4 @@ As credenciais não devem ser colocadas nos arquivos enviados ao GitHub.
 - `feature/base-thindesk`: inclusão do sistema existente e atualização do escopo
 - `feature/api-dashboard`: endpoints de indicadores e filtros
 - `feature/dashboard`: painel Thymeleaf integrado à API
-- `feature/testes-documentacao`: testes, evidências e roteiro do vídeo
+- `feature/testes-documentacao`: documentação e evidências de testes

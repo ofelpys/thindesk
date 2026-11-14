@@ -14,6 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class HomeController {
@@ -41,6 +44,11 @@ public class HomeController {
         return modelAndView;
     }
 
+    @GetMapping("/dashboard")
+    public String dashboard() {
+        return "dashboard";
+    }
+
     @GetMapping("/chamados")
     public String chamados(Model model) {
         List<Chamado> chamados = chamadoService.listarChamados();
@@ -49,6 +57,26 @@ public class HomeController {
         log.info("Carregando fragmento: {}", fragment); // Log para depuração
         model.addAttribute("content", fragment);
         return "chamados";
+    }
+
+    @PostMapping("/chamados")
+    public String criarChamado(@ModelAttribute Chamado chamado) {
+        chamadoService.criarChamado(chamado);
+        return "redirect:/chamados";
+    }
+
+    @GetMapping("/chamados/atualizar/{id}")
+    public String editarChamado(@PathVariable("id") String id, Model model) {
+        model.addAttribute("chamado", chamadoService.buscarPorId(id));
+        return "chamados/atualizar";
+    }
+
+    @PostMapping("/chamados/atualizar/{id}")
+    public String salvarChamado(
+            @PathVariable("id") String id,
+            @ModelAttribute Chamado chamado) {
+        chamadoService.atualizarChamado(id, chamado);
+        return "redirect:/chamados";
     }
 
     @GetMapping("/clientes")
