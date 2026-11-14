@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard | Thindesk</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        #content {
+            min-width: 0;
+            background: #f5f7fb;
+        }
+        .grafico-barras {
+            min-height: 240px;
+            display: flex;
+            align-items: flex-end;
+            gap: 16px;
+            overflow-x: auto;
+            padding: 12px;
+        }
+        .grafico-coluna {
+            min-width: 70px;
+            height: 210px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+        }
+        .grafico-valor {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .grafico-barra {
+            width: 36px;
+            background: #0d6efd;
+            border-radius: 5px 5px 0 0;
+        }
+        .grafico-data {
+            font-size: 0.75rem;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+<aside>
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+</aside>
+
+<div class="toggle-btn btn btn-dark d-md-none" aria-label="Abrir menu">
+    <span>&#9776;</span>
+</div>
+
+<main id="content" class="container-fluid px-3 px-md-4 pt-5 pt-md-4 pb-4">
+    <header class="mb-4">
+        <h1 class="h2 mb-1">Dashboard administrativo</h1>
+        <p class="text-secondary mb-0">
+            Acompanhe os chamados técnicos do Thindesk.
+        </p>
+    </header>
+
+    <section class="card border-0 shadow-sm mb-4" aria-labelledby="tituloFiltros">
+        <div class="card-body">
+            <h2 id="tituloFiltros" class="h5">Filtros</h2>
+            <p class="small text-secondary">
+                Sem datas informadas, são considerados os últimos 30 dias.
+                Para escolher um período, preencha as duas datas.
+            </p>
+
+            <form id="filtros" class="row g-3">
+                <div class="col-sm-6 col-lg-3">
+                    <label for="inicio" class="form-label">Data inicial</label>
+                    <input type="date" id="inicio" class="form-control">
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <label for="fim" class="form-label">Data final</label>
+                    <input type="date" id="fim" class="form-control">
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select id="status" class="form-select">
+                        <option value="">Todos</option>
+                        <option value="ABERTO">Aberto</option>
+                        <option value="EM_ANDAMENTO">Em andamento</option>
+                        <option value="CONCLUIDO">Concluído</option>
+                    </select>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <label for="tipo" class="form-label">Tipo</label>
+                    <input type="text" id="tipo" class="form-control"
+                           placeholder="Ex.: Critico">
+                </div>
+                <div class="col-12 d-flex flex-wrap gap-2">
+                    <button type="submit" class="btn btn-primary">Aplicar filtros</button>
+                    <button type="button" id="atualizar" class="btn btn-outline-primary">
+                        Atualizar dados
+                    </button>
+                    <button type="reset" id="limpar" class="btn btn-outline-secondary">
+                        Limpar filtros
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <div id="mensagem" class="alert alert-info" role="status" aria-live="polite">
+        Carregando dados...
+    </div>
+    <p id="atualizadoEm" class="small text-secondary"></p>
+
+    <section class="row g-3 mb-4" aria-label="Indicadores gerais">
+        <div class="col-6 col-md-4 col-xl">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <p class="small text-secondary mb-1">Total</p>
+                    <strong id="totalChamados" class="fs-2">—</strong>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 col-xl">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <p class="small text-secondary mb-1">Abertos</p>
+                    <strong id="abertos" class="fs-2">—</strong>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 col-xl">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <p class="small text-secondary mb-1">Em andamento</p>
+                    <strong id="emAndamento" class="fs-2">—</strong>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 col-xl">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <p class="small text-secondary mb-1">Concluídos</p>
+                    <strong id="concluidos" class="fs-2">—</strong>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 col-xl">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <p class="small text-secondary mb-1">Tempo médio</p>
+                    <strong id="tempoMedio" class="fs-2">—</strong>
+                    <span>min</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="row g-3 mb-4">
+        <div class="col-lg-8">
+            <section class="card border-0 shadow-sm h-100"
+                     aria-labelledby="tituloGrafico">
+                <div class="card-body">
+                    <h2 id="tituloGrafico" class="h5">Chamados concluídos por dia</h2>
+                    <div id="graficoAtendidos" class="grafico-barras">
+                        <p class="text-secondary">Carregando gráfico...</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="col-lg-4">
+            <section class="card border-0 shadow-sm h-100"
+                     aria-labelledby="tituloSituacao">
+                <div class="card-body">
+                    <h2 id="tituloSituacao" class="h5">Situação dos chamados</h2>
+                    <div id="situacao">
+                        <p class="text-secondary">Carregando situação...</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-lg-4">
+            <section class="card border-0 shadow-sm h-100"
+                     aria-labelledby="tituloTipos">
+                <div class="card-body">
+                    <h2 id="tituloTipos" class="h5">Tipos mais atendidos</h2>
+                    <ol id="rankingTipos" class="list-group list-group-numbered">
+                        <li class="list-group-item">Carregando ranking...</li>
+                    </ol>
+                </div>
+            </section>
+        </div>
+        <div class="col-lg-8">
+            <section class="card border-0 shadow-sm h-100"
+                     aria-labelledby="tituloLista">
+                <div class="card-body">
+                    <h2 id="tituloLista" class="h5">Chamados do período</h2>
+                    <div class="table-responsive">
+                        <table class="table table-striped align-middle">
+                            <thead>
+                            <tr>
+                                <th>Abertura</th>
+                                <th>Descrição</th>
+                                <th>Status</th>
+                                <th>Tipo</th>
+                                <th>Técnico</th>
+                                <th>Usuário</th>
+                                <th>Considerações técnicas</th>
+                            </tr>
+                            </thead>
+                            <tbody id="listaChamados">
+                            <tr>
+                                <td colspan="7" class="text-secondary">
+                                    Carregando chamados...
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</main>
+
+<script th:src="@{/js/script.js}"></script>
+<script th:src="@{/js/dashboard.js}"></script>
+</body>
+</html>
