@@ -1,12 +1,12 @@
 package com.pfc.thindesk.entity;
 
+import java.time.Instant;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-
 @Document(collection = "chamados")
-public class Chamado{
-    
+public class Chamado {
+
     @Id
     private String id;
     private String descricao;
@@ -14,6 +14,9 @@ public class Chamado{
     private String tipo;
     private String tecnico;
     private String usuario;
+    private Instant abertoEm;
+    private Instant concluidoEm;
+    private String consideracoesTecnicas;
 
     public String getId() {
         return id;
@@ -62,7 +65,28 @@ public class Chamado{
     public void setUsuario(String usuario) {
         this.usuario = usuario;
     }
-    
-    
-    
+
+    public Instant getAbertoEm() {
+        return abertoEm;
+    }
+
+    public void setAbertoEm(Instant abertoEm) {
+        this.abertoEm = abertoEm;
+    }
+
+    public Instant getConcluidoEm() {
+        return concluidoEm;
+    }
+
+    public void setConcluidoEm(Instant concluidoEm) {
+        this.concluidoEm = concluidoEm;
+    }
+
+    public String getConsideracoesTecnicas() {
+        return consideracoesTecnicas;
+    }
+
+    public void setConsideracoesTecnicas(String consideracoesTecnicas) {
+        this.consideracoesTecnicas = consideracoesTecnicas;
+    }
 }
