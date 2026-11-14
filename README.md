@@ -1,16 +1,32 @@
-# Pizzaria Monteiro
+# Thindesk
 
-Projeto de um dashboard administrativo para acompanhar os pedidos de uma pizzaria.
+Sistema de chamados técnicos com dashboard administrativo em desenvolvimento.
 
-## Tecnologias previstas
+## Tecnologias
 
-- Java com Spring Boot no backend;
-- Thymeleaf, HTML, CSS e JavaScript no dashboard;
-- PostgreSQL para persistir os dados;
-- Maven para organizar e executar o projeto.
+- Java e Spring Boot no backend
+- Thymeleaf, HTML, CSS e JavaScript no frontend
+- MongoDB Atlas para armazenar os chamados
+- Maven Wrapper para executar o projeto
 
-## Organização do trabalho
+## Objetivo do dashboard
 
-Usaremos um Gitflow simples: `main` para a versão estável, `develop` para integrar o trabalho e uma branch `feature/...` para cada etapa.
+O painel permitirá acompanhar indicadores gerais, chamados atendidos por período, distribuição por status, tipos mais atendidos e filtros de consulta. Os dados serão fornecidos por endpoints da própria aplicação.
 
-O projeto está na etapa inicial de planejamento. A documentação dos requisitos e da API será criada antes da implementação.
+## Execução local
+
+1. Abra a pasta raiz do projeto.
+2. Configure `MONGODB_URI`, `THINDESK_LOGIN_USER` e `THINDESK_LOGIN_PASSWORD` na configuração de execução.
+3. Execute `com.pfc.ThindeskApplication`.
+4. Acesse `http://localhost:8080/login`.
+
+As credenciais não devem ser colocadas nos arquivos enviados ao GitHub.
+
+## Gitflow
+
+- `main`: versão estável
+- `develop`: integração das funcionalidades
+- `feature/base-thindesk`: inclusão do sistema existente e atualização do escopo
+- `feature/api-dashboard`: endpoints de indicadores e filtros
+- `feature/dashboard`: painel Thymeleaf integrado à API
+- `feature/testes-documentacao`: testes, evidências e roteiro do vídeo
